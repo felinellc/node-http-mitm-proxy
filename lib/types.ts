@@ -1,5 +1,5 @@
-import http = require("http");
-import https = require("https");
+import http from "http";
+import https from "https";
 import type CA from "../lib/ca";
 import type WebSocket from "ws";
 import type { Server } from "https";
