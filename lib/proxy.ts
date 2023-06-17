@@ -12,8 +12,10 @@ import type { Server, ServerOptions } from "https";
 import https from "https";
 import fs from "fs";
 import path from "path";
-import type { WebSocket as WebSocketType } from "ws";
+import type { WebSocket as WebSocketTypeRaw } from "ws";
 import WebSocket, { WebSocketServer } from "ws";
+
+type WebSocketType = WebSocketTypeRaw & { upgradeReq: any }
 
 import url from "url";
 import semaphore from "semaphore";
@@ -91,8 +93,8 @@ export class Proxy implements IProxy {
   sslSemaphores: Record<string, semaphore.Semaphore> = {};
   sslServers: Record<string, IProxySSLServer> = {};
   timeout!: number;
-  wsServer: WebSocketServer | undefined;
-  wssServer: WebSocketServer | undefined;
+  wsServer: ({ upgradeReq: any } & WebSocketServer) | undefined;
+  wssServer: ({ upgradeReq: any } & WebSocketServer) | undefined;
   static wildcard = wildcard;
   static gunzip = gunzip;
 
@@ -157,7 +159,7 @@ export class Proxy implements IProxy {
         "error",
         self._onError.bind(self, "HTTP_SERVER_ERROR", null)
       );
-      self.wsServer.on("connection", (ws, req) => {
+      self.wsServer.on("connection", (ws: WebSocket & {upgradeReq: any}, req) => {
         ws.upgradeReq = req;
         self._onWebSocketServerConnect.call(self, false, ws, req);
       });
