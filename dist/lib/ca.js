@@ -137,6 +137,16 @@ const ServerExtensions = [
     {
         name: "subjectKeyIdentifier",
     },
+    {
+        name: "subjectAltName",
+        altNames: [{
+                type: 6,
+                value: "http://localhost"
+            }, {
+                type: 7,
+                ip: "127.0.0.1"
+            }]
+    }
 ];
 class CA {
     static create(caFolder, callback) {
