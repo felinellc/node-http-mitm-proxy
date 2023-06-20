@@ -70,6 +70,16 @@ const CAextensions = [
     {
         name: "subjectKeyIdentifier",
     },
+    {
+        name: "subjectAltName",
+        altNames: [{
+                type: 6,
+                value: "http://localhost"
+            }, {
+                type: 7,
+                ip: "127.0.0.1"
+            }]
+    }
 ];
 const ServerAttrs = [
     {
